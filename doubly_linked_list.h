@@ -19,7 +19,7 @@ public:
 		Node* next = nullptr;
 	};
 	
-	DoublyLinkedList() = default;       // Default constructor
+	DoublyLinkedList() = default;  // Default constructor
 	explicit DoublyLinkedList(CountType count, const T& value = T());
 	DoublyLinkedList(std::initializer_list<T> init);
 	DoublyLinkedList(const DoublyLinkedList& other);  // Copy constructor

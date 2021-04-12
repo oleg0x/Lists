@@ -51,12 +51,24 @@ DoublyLinkedList<T>::~DoublyLinkedList()
 }
 
 
+//-----------------------------------------------------------------------------
+
 
 template <typename T>
 DoublyLinkedList<T>& DoublyLinkedList<T>::operator=(const DoublyLinkedList& other)
 {
+/*	if ( &other != this )
+	{
+		while ( front_ )  PopFront();
+		for ( Node* p = other.front_; p; p = p->next )  PushBack(p->value);
+	}
+	cerr << "operator=(const DoublyLinkedList&),  size = " << size_ << '\n';
+	return *this; */
+	
+	auto copy_other = new DoublyLinkedList<T>(other);
 	while ( front_ )  PopFront();
-	for ( Node* p = other.front_; p; p = p->next )  PushBack(p->value);
+	front_ = copy_other->front_;  back_ = copy_other->back_;
+	size_ = copy_other->size_;
 	cerr << "operator=(const DoublyLinkedList&),  size = " << size_ << '\n';
 	return *this;
 }
@@ -66,12 +78,15 @@ DoublyLinkedList<T>& DoublyLinkedList<T>::operator=(const DoublyLinkedList& othe
 template <typename T>
 DoublyLinkedList<T>& DoublyLinkedList<T>::operator=(DoublyLinkedList&& other)
 {
-	while ( front_ )  PopFront();
-	front_ = other.front_;  back_ = other.back_;
-	size_ = other.size_;
-	other.front_ = other.back_ = nullptr;
-	other.size_ = 0;
-	cerr << "DoublyLinkedList(DoublyLinkedList&&),  size = " << size_ << '\n';
+	if ( &other != this )
+	{
+		while ( front_ )  PopFront();
+		front_ = other.front_;  back_ = other.back_;
+		size_ = other.size_;
+		other.front_ = other.back_ = nullptr;
+		other.size_ = 0;
+	}
+	cerr << "operator=(DoublyLinkedList&&),  size = " << size_ << '\n';
 	return *this;
 }
 
@@ -287,7 +302,6 @@ void DoublyLinkedList<T>::Swap(Node* n1, Node* n2)
 	Node* prev1 = n1->prev;
 	Node* next1 = n1->next;
 	Node* prev2 = n2->prev;
-//	Node* next2 = n2->next;
 	
 	if ( n1->next == n2 )
 	{
@@ -355,9 +369,7 @@ template <typename T>
 void DoublyLinkedList<T>::Print() const
 {
 	cout << size_ <<  ": [ ";
-//	for ( Node* p = front_; p; p = p->next )  cout << p->value << " ";
-	Node* p = front_;
-	for ( CountType i = 0; i < size_; ++i ) { cout << p->value << " "; p = p->next; }
+	for ( Node* p = front_; p; p = p->next )  cout << p->value << ' ';
 	cout << "]\n";
 }
 
@@ -369,12 +381,13 @@ bool operator ==(const DoublyLinkedList<U>& lhs, const DoublyLinkedList<U>& rhs)
 	if ( lhs.size_ != rhs.size_ )  return false;
 	for ( typename DoublyLinkedList<U>::Node * p1 = lhs.front_, * p2 = rhs.front_;
 		  p1 && p2;
-	      p1 = p1->next, p2 = p2->next
-	    )
+	      p1 = p1->next, p2 = p2->next )
 		if ( p1->value != p2->value )  return false;
 	return true;
 }
 
+
+//-----------------------------------------------------------------------------
 
 
 template class DoublyLinkedList<char>;

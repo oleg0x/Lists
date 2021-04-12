@@ -4,7 +4,7 @@
 #include <string>
 #include <cassert>
 
-using std::cout, std::cerr, std::string;
+using std::cerr, std::string;
 
 
 
@@ -61,12 +61,18 @@ void TestAssignments()
 		l1.Print();
 		DoublyLinkedList<int> l2(6, 3);
 		l2.Print();
+		
 		l1 = l2;
 		l1.Print();
 		l2.Print();
 		assert( l1.Size() == 6 && !l1.Empty() );
 		assert( l2.Size() == 6 && !l2.Empty() );
-		assert( l1 == (DoublyLinkedList<int> {3, 3, 3, 3, 3, 3}) );		
+		assert( l1 == (DoublyLinkedList<int> {3, 3, 3, 3, 3, 3}) );
+		
+		l2 = l2;
+		assert( l2.Size() == 6 && !l2.Empty() );
+		assert( l2 == (DoublyLinkedList<int> {3, 3, 3, 3, 3, 3}) );
+		
 		DoublyLinkedList<int> l3 {4, 5, 6, 7};
 		l1 = l3;
 		l1.Print();
@@ -74,6 +80,10 @@ void TestAssignments()
 		assert( l1.Size() == 4 && !l1.Empty() );
 		assert( l3.Size() == 4 && !l3.Empty() );
 		assert( l1 == (DoublyLinkedList<int> {4, 5, 6, 7}) );
+		
+		l3 = l3;
+		assert( l3.Size() == 4 && !l3.Empty() );
+		assert( l3 == (DoublyLinkedList<int> {4, 5, 6, 7}) );
 	}
 	
 	{
@@ -82,13 +92,20 @@ void TestAssignments()
 		l1.Print();
 		DoublyLinkedList<int> l2(6, 3);
 		l2.Print();
+		
 		l1 = std::move(l2);
 		l1.Print();
 		l2.Print();
 		assert( l1.Size() == 6 && !l1.Empty() );
 		assert( l2.Size() == 0 && l2.Empty() );
 		assert( l1 == (DoublyLinkedList<int> {3, 3, 3, 3, 3, 3}) );
+		
 		l1 = DoublyLinkedList<int> {4, 5, 6, 7};
+		l1.Print();
+		assert( l1.Size() == 4 && !l1.Empty() );
+		assert( l1 == (DoublyLinkedList<int> {4, 5, 6, 7}) );
+		
+		l1 = std::move(l1);
 		l1.Print();
 		assert( l1.Size() == 4 && !l1.Empty() );
 		assert( l1 == (DoublyLinkedList<int> {4, 5, 6, 7}) );
@@ -116,19 +133,12 @@ void TestPush()
 		assert( l.Size() == 6 && l == sample );
 	}
 	
-	cerr << "---------- TestPush is OK ----------\n\n";
-}
-
-
-
-void TestMove()
-{
 	{
 		DoublyLinkedList<string> l;
 		string str("ABC");
-		cout << "str = '" << str << "\'\n";
+		cerr << "str = '" << str << "\'\n";
 		l.PushFront(move(str));
-		cout << "str = '" << str << "\'\n";
+		cerr << "str = '" << str << "\'\n";
 		assert( str.empty() );
 		assert( l.Size() == 1 && l == (DoublyLinkedList<string> {"ABC"}) );
 		l.PushBack(string("XYZ"));
@@ -136,7 +146,7 @@ void TestMove()
 		assert( l.Size() == 2 && l == (DoublyLinkedList<string> {"ABC", "XYZ"}) );
 	}
 	
-	cerr << "---------- TestMove is OK ----------\n\n";
+	cerr << "---------- TestPush is OK ----------\n\n";
 }
 
 
@@ -198,52 +208,52 @@ void TestInsertBefore()
 void TestSwap()
 {
 	{
-	DoublyLinkedList<int16_t> l {1};
-	l.Print();
-	l.Swap(l.Begin(), l.End());
-	l.Print();
-	assert( l.Size() == 1 && l == DoublyLinkedList<int16_t> {1} );
+		DoublyLinkedList<int16_t> l {1};
+		l.Print();
+		l.Swap(l.Begin(), l.End());
+		l.Print();
+		assert( l.Size() == 1 && l == DoublyLinkedList<int16_t> {1} );
 	
-	l.PushBack(2);
-	l.Print();
-	l.Swap(l.Begin(), l.End());
-	l.Print();
-	assert( l.Size() == 2 && l == (DoublyLinkedList<int16_t> {2, 1}) );
-	l.Swap(l.End(), l.Begin());
-	l.Print();
-	assert( l.Size() == 2 && l == (DoublyLinkedList<int16_t> {1, 2}) );
+		l.PushBack(2);
+		l.Print();
+		l.Swap(l.Begin(), l.End());
+		l.Print();
+		assert( l.Size() == 2 && l == (DoublyLinkedList<int16_t> {2, 1}) );
+		l.Swap(l.End(), l.Begin());
+		l.Print();
+		assert( l.Size() == 2 && l == (DoublyLinkedList<int16_t> {1, 2}) );
 	
-	l.PushBack(3);
-	l.Print();
-	l.Swap(l.Begin(), l.End());
-	l.Print();
-	assert( l.Size() == 3 && l == (DoublyLinkedList<int16_t> {3, 2, 1}) );
-	l.Swap(l.End(), l.Begin());
-	l.Print();
-	assert( l.Size() == 3 && l == (DoublyLinkedList<int16_t> {1, 2, 3}) );
+		l.PushBack(3);
+		l.Print();
+		l.Swap(l.Begin(), l.End());
+		l.Print();
+		assert( l.Size() == 3 && l == (DoublyLinkedList<int16_t> {3, 2, 1}) );
+		l.Swap(l.End(), l.Begin());
+		l.Print();
+		assert( l.Size() == 3 && l == (DoublyLinkedList<int16_t> {1, 2, 3}) );
 	
-	l.PushBack(4);
-	l.PushBack(5);
-	l.PushBack(6);
-	l.Print();
-	l.Swap( l.Next(l.Begin()), l.Prev(l.End()) );
-	l.Print();
-	assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {1, 5, 3, 4, 2, 6}) );
-	l.Swap( l.Prev(l.End()), l.Next(l.Begin()) );
-	l.Print();
-	assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {1, 2, 3, 4, 5, 6}) );
-	l.Swap( l.Begin(), l.Prev(l.Prev(l.End())) );
-	l.Print();
-	assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {4, 2, 3, 1, 5, 6}) );
-	l.Swap( l.Prev(l.Prev(l.End())), l.Begin() );
-	l.Print();
-	assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {1, 2, 3, 4, 5, 6}) );
-	l.Swap( l.End(), l.Prev(l.End()) );
-	l.Print();
-	assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {1, 2, 3, 4, 6, 5}) );
-	l.Swap( l.Prev(l.End()), l.End() );
-	l.Print();
-	assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {1, 2, 3, 4, 5, 6}) );
+		l.PushBack(4);
+		l.PushBack(5);
+		l.PushBack(6);
+		l.Print();
+		l.Swap( l.Next(l.Begin()), l.Prev(l.End()) );
+		l.Print();
+		assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {1, 5, 3, 4, 2, 6}) );
+		l.Swap( l.Prev(l.End()), l.Next(l.Begin()) );
+		l.Print();
+		assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {1, 2, 3, 4, 5, 6}) );
+		l.Swap( l.Begin(), l.Prev(l.Prev(l.End())) );
+		l.Print();
+		assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {4, 2, 3, 1, 5, 6}) );
+		l.Swap( l.Prev(l.Prev(l.End())), l.Begin() );
+		l.Print();
+		assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {1, 2, 3, 4, 5, 6}) );
+		l.Swap( l.End(), l.Prev(l.End()) );
+		l.Print();
+		assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {1, 2, 3, 4, 6, 5}) );
+		l.Swap( l.Prev(l.End()), l.End() );
+		l.Print();
+		assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {1, 2, 3, 4, 5, 6}) );
 	}
 	
 	cerr << "---------- TestSwap is OK ----------\n\n";
@@ -279,6 +289,14 @@ void TestErase()
 		assert( l.Size() == 0 && l == (DoublyLinkedList<int16_t>()) );
 	}
 	
+	{
+		DoublyLinkedList<int16_t> l {5, 4, 3, 2, 1};
+		l.Print();
+		l.Clear();
+		l.Print();
+		assert( l.Size() == 0 && l == (DoublyLinkedList<int16_t>()) );
+	}
+	
 	cerr << "---------- TestErase is OK ----------\n\n";
 }
 
@@ -291,9 +309,11 @@ void TestIteration()
 		l.Print();
 		cerr << --l.Front()  << ' ' << (l.Back() *= 10) << '\n';
 		assert( l.Front() == 0 && l.Back() == 10 );
-		for ( auto p = l.Begin(); p; p = l.Next(p) )  cerr << p->value << ',';
+		for ( auto p = l.Begin(); p; p = l.Next(p) )
+			cerr << ++(p->value) << ", ";
 		cerr << '\n';
-		for ( auto p = l.End(); p; p = l.Prev(p) )  cerr << p->value << ',';
+		for ( auto p = l.End(); p; p = l.Prev(p) )
+			cerr << (p->value *= 10) << ", ";
 		cerr << '\n';
 	}
 	
@@ -321,14 +341,14 @@ void TestIterator()
 		for ( it.First(); !it.IsDone(); ++it )
 		{
 			*it += ++k;
-			cerr << it.Current() << ", ";
+			cerr << *it << ", ";
 		}
 		cerr << '\n';
 	
 		for ( it.Last(); !it.IsDone(); --it )
 		{
 			*it *= 10;
-			cerr << it.Current() << ", ";
+			cerr << *it << ", ";
 		}
 		cerr << '\n';
 	
