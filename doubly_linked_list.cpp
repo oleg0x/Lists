@@ -295,51 +295,6 @@ void DoublyLinkedList<T>::InsertBefore(Node* node, const T& value)
 
 
 template <typename T>
-void DoublyLinkedList<T>::Swap(Node* n1, Node* n2)
-{
-	if ( size_ <= 1 )  return;
-	
-	Node* prev1 = n1->prev;
-	Node* next1 = n1->next;
-	Node* prev2 = n2->prev;
-	
-	if ( n1->next == n2 )
-	{
-		if ( n1->prev )  n1->prev->next = n2;
-		if ( n2->next )  n2->next->prev = n1;
-		n1->prev = n2;     n1->next = n2->next;
-		n2->prev = prev1;  n2->next = n1;
-	}
-	else if ( n2->next == n1 )
-	{
-		if ( n2->prev )  n2->prev->next = n1;
-		if ( n1->next )  n1->next->prev = n2;
-		n2->prev = n1;     n2->next = n1->next;
-		n1->prev = prev2;  n1->next = n2;
-	}
-	else
-	{
-		if ( n1->prev )  n1->prev->next = n2;
-		if ( n2->next )  n2->next->prev = n1;
-	
-		if ( n2->prev )  n2->prev->next = n1;
-		if ( n1->next )  n1->next->prev = n2;
-
-		n1->prev = n2->prev;  n1->next = n2->next;
-		n2->prev = prev1;     n2->next = next1;
-	}
-	
-	if ( front_ == n1 )  front_ = n2;
-	else if ( front_ == n2 )  front_ = n1;
-	if ( back_ == n1 )  back_ = n2;
-	else if ( back_ == n2 )  back_ = n1;
-}
-
-
-//-----------------------------------------------------------------------------
-
-
-template <typename T>
 void DoublyLinkedList<T>::Erase(Node* node)
 {
 	if ( node )
@@ -359,6 +314,65 @@ template <typename T>
 void DoublyLinkedList<T>::Clear()
 {
 	while ( front_ )  PopFront();
+}
+
+
+//-----------------------------------------------------------------------------
+
+
+template <typename T>
+void DoublyLinkedList<T>::Swap(Node* n1, Node* n2)
+{
+	if ( size_ <= 1 )  return;
+
+	Node* prev1 = n1->prev;
+	Node* next1 = n1->next;
+	Node* prev2 = n2->prev;
+
+	if ( n1->next == n2 )
+	{
+		if ( n1->prev )  n1->prev->next = n2;
+		if ( n2->next )  n2->next->prev = n1;
+		n1->prev = n2;     n1->next = n2->next;
+		n2->prev = prev1;  n2->next = n1;
+	}
+	else if ( n2->next == n1 )
+	{
+		if ( n2->prev )  n2->prev->next = n1;
+		if ( n1->next )  n1->next->prev = n2;
+		n2->prev = n1;     n2->next = n1->next;
+		n1->prev = prev2;  n1->next = n2;
+	}
+	else
+	{
+		if ( n1->prev )  n1->prev->next = n2;
+		if ( n2->next )  n2->next->prev = n1;
+		if ( n2->prev )  n2->prev->next = n1;
+		if ( n1->next )  n1->next->prev = n2;
+		n1->prev = n2->prev;  n1->next = n2->next;
+		n2->prev = prev1;     n2->next = next1;
+	}
+
+	if ( front_ == n1 )  front_ = n2;
+	else if ( front_ == n2 )  front_ = n1;
+	if ( back_ == n1 )  back_ = n2;
+	else if ( back_ == n2 )  back_ = n1;
+}
+
+
+template <typename T>
+void DoublyLinkedList<T>::BubbleSort()
+{
+	for ( bool swapped = true; swapped; )
+	{
+		swapped = false;
+		for ( auto p = front_; p && p->next; p = p->next )
+			if ( p->value > p->next->value )
+			{
+				Swap(p, p->next);
+				swapped = true;
+			}
+	}
 }
 
 

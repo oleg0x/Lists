@@ -254,9 +254,59 @@ void TestSwap()
 		l.Swap( l.Prev(l.End()), l.End() );
 		l.Print();
 		assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {1, 2, 3, 4, 5, 6}) );
+		l.Swap( l.Next(l.Next(l.Begin())), l.Prev(l.Prev(l.End())) );
+		l.Print();
+		assert( l.Size() == 6 && l == (DoublyLinkedList<int16_t> {1, 2, 4, 3, 5, 6}) );
 	}
 	
 	cerr << "---------- TestSwap is OK ----------\n\n";
+}
+
+
+
+void TestBubbleSort()
+{
+	{
+		DoublyLinkedList<int16_t> l;
+		l.Print();
+		l.BubbleSort();
+		l.Print();
+		assert( l.Size() == 0 && l == DoublyLinkedList<int16_t>() );
+	}
+
+	{
+		DoublyLinkedList<int16_t> l {5};
+		l.Print();
+		l.BubbleSort();
+		l.Print();
+		assert( l.Size() == 1 && l == (DoublyLinkedList<int16_t> {5}) );
+	}
+
+	{
+		DoublyLinkedList<int16_t> l {7, 5};
+		l.Print();
+		l.BubbleSort();
+		l.Print();
+		assert( l.Size() == 2 && l == (DoublyLinkedList<int16_t> {5, 7}) );
+	}
+
+	{
+		DoublyLinkedList<int16_t> l {2, 5, 8};
+		l.Print();
+		l.BubbleSort();
+		l.Print();
+		assert( l.Size() == 3 && l == (DoublyLinkedList<int16_t> {2, 5, 8}) );
+	}
+
+	{
+		DoublyLinkedList<int16_t> l {4, 6, 1, 3, 7, 5, 2};
+		l.Print();
+		l.BubbleSort();
+		l.Print();
+		assert( l.Size() == 7 && l == (DoublyLinkedList<int16_t> {1, 2, 3, 4, 5, 6, 7}) );
+	}
+
+	cerr << "---------- TestBubbleSort is OK ----------\n\n";
 }
 
 

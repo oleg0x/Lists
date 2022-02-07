@@ -5,8 +5,9 @@ void TestAssignments();
 void TestPush();
 void TestPop();
 void TestInsertBefore();
-void TestSwap();
 void TestErase();
+void TestSwap();
+void TestBubbleSort();
 void TestIteration();
 void TestIterator();
 
@@ -23,10 +24,11 @@ int main()
 	TestPop();
 		
 	TestInsertBefore();
-	TestSwap();
-	
 	TestErase();
-	
+
+	TestSwap();
+	TestBubbleSort();
+
 	TestIteration();
 	TestIterator();
 }

@@ -53,11 +53,12 @@ public:
 	void PopFront();  // Removes the first element 
 	
 	void InsertBefore(Node* node, const T& value);
-	void Swap(Node* n1, Node* n2);
-	
 	void Erase(Node* node);
 	void Clear();
-		
+
+	void Swap(Node* n1, Node* n2);
+	void BubbleSort();
+
 	void Print() const;
 
 private:
